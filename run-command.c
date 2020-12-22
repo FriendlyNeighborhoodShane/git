@@ -517,8 +517,10 @@ static void atfork_prepare(struct atfork_state *as)
 #else
 	CHECK_BUG(pthread_sigmask(SIG_SETMASK, &all, &as->old),
 		"blocking all signals");
+# ifndef __ANDROID__
 	CHECK_BUG(pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &as->cs),
 		"disabling cancellation");
+# endif
 #endif
 }
 
@@ -528,8 +530,10 @@ static void atfork_parent(struct atfork_state *as)
 	if (sigprocmask(SIG_SETMASK, &as->old, NULL))
 		die_errno("sigprocmask");
 #else
+# ifndef __ANDROID__
 	CHECK_BUG(pthread_setcancelstate(as->cs, NULL),
 		"re-enabling cancellation");
+# endif
 	CHECK_BUG(pthread_sigmask(SIG_SETMASK, &as->old, NULL),
 		"restoring signal mask");
 #endif
