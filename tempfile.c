@@ -186,7 +186,7 @@ struct tempfile *mks_tempfile_tsm(const char *filename_template, int suffixlen, 
 
 	tmpdir = getenv("TMPDIR");
 	if (!tmpdir)
-		tmpdir = "/tmp";
+		tmpdir = "@TERMUX_PREFIX@/tmp";
 
 	strbuf_addf(&tempfile->filename, "%s/%s", tmpdir, filename_template);
 	tempfile->fd = git_mkstemps_mode(tempfile->filename.buf, suffixlen, mode);
