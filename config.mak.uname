@@ -4,7 +4,7 @@
 # Microsoft's Safe Exception Handling in libraries (such as zlib).
 # Typically required for VS2013+/32-bit compilation on Vista+ versions.
 
-uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
+uname_S := Linux
 uname_M := $(shell sh -c 'uname -m 2>/dev/null || echo not')
 uname_O := $(shell sh -c 'uname -o 2>/dev/null || echo not')
 uname_R := $(shell sh -c 'uname -r 2>/dev/null || echo not')
@@ -51,8 +51,6 @@ ifeq ($(uname_S),Linux)
 	HAVE_DEV_TTY = YesPlease
 	HAVE_CLOCK_GETTIME = YesPlease
 	HAVE_CLOCK_MONOTONIC = YesPlease
-	# -lrt is needed for clock_gettime on glibc <= 2.16
-	NEEDS_LIBRT = YesPlease
 	HAVE_GETDELIM = YesPlease
 	SANE_TEXT_GREP=-a
 	FREAD_READS_DIRECTORIES = UnfortunatelyYes
