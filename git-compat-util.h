@@ -1143,6 +1143,10 @@ static inline int regexec_buf(const regex_t *preg, const char *buf, size_t size,
 # define FORCE_DIR_SET_GID 0
 #endif
 
+#ifdef __ANDROID__
+#define ST_CTIME_NSEC(st) ((unsigned int)((st).st_ctime_nsec))
+#define ST_MTIME_NSEC(st) ((unsigned int)((st).st_mtime_nsec))
+#else
 #ifdef NO_NSEC
 #undef USE_NSEC
 #define ST_CTIME_NSEC(st) 0
@@ -1154,6 +1158,7 @@ static inline int regexec_buf(const regex_t *preg, const char *buf, size_t size,
 #else
 #define ST_CTIME_NSEC(st) ((unsigned int)((st).st_ctim.tv_nsec))
 #define ST_MTIME_NSEC(st) ((unsigned int)((st).st_mtim.tv_nsec))
+#endif
 #endif
 #endif
 
