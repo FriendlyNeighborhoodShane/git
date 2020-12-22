@@ -82,9 +82,11 @@ static void logreport(int priority, const char *err, va_list params)
 {
 	switch (log_destination) {
 	case LOG_DESTINATION_SYSLOG: {
+		/*
 		char buf[1024];
 		vsnprintf(buf, sizeof(buf), err, params);
 		syslog(priority, "%s", buf);
+		*/
 		break;
 	}
 	case LOG_DESTINATION_STDERR:
@@ -1432,7 +1434,9 @@ int cmd_main(int argc, const char **argv)
 	}
 
 	if (log_destination == LOG_DESTINATION_SYSLOG) {
+		/*
 		openlog("git-daemon", LOG_PID, LOG_DAEMON);
+		*/
 		set_die_routine(daemon_die);
 	} else
 		/* avoid splitting a message in the middle */
