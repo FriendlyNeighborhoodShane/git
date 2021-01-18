@@ -2462,6 +2462,8 @@ static int handle_revision_opt(struct rev_info *revs, int argc, const char **arg
 		revs->full_diff = 1;
 	} else if (!strcmp(arg, "--show-pulls")) {
 		revs->show_pulls = 1;
+	} else if (!strcmp(arg, "--show-forkpoints")) {
+		revs->show_forkpoints = 1;
 	} else if (!strcmp(arg, "--full-history")) {
 		revs->simplify_history = 0;
 	} else if (!strcmp(arg, "--relative-date")) {
@@ -3861,6 +3863,9 @@ enum commit_action get_commit_action(struct rev_info *revs, struct commit *commi
 				return commit_ignore;
 
 			if (revs->show_pulls && (commit->object.flags & PULL_MERGE))
+				return commit_show;
+
+			if (revs->show_forkpoints && (commit->object.flags & CHILD_SHOWN))
 				return commit_show;
 
 			/*

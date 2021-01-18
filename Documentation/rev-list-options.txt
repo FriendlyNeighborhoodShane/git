@@ -347,6 +347,13 @@ Default mode::
 	TREESAME to a later parent. This mode is helpful for showing
 	the merge commits that "first introduced" a change to a branch.
 
+--show-forkpoints::
+	Include all commits from the default mode, but also any commits
+	that are direct parents to multiple interesting commits, i.e.
+	where the project history has diverged into two forks. This mode
+	is helpful with diffs for seeing what changes have happened after
+	histories split.
+
 --full-history::
 	Same as the default mode, but does not prune some history.
 

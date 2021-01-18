@@ -274,4 +274,8 @@ test_expect_success 'log --graph --simplify-merges --show-pulls' '
 	test_cmp expect actual
 '
 
+#
+# Create a new history to demonstrate the value of --show-pulls
+# with respect to the subtleties of simplified history, and --full-history.
+
 test_done

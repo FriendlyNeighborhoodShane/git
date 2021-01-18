@@ -136,6 +136,7 @@ struct rev_info {
 			remove_empty_trees:1,
 			simplify_history:1,
 			show_pulls:1,
+			show_forkpoints:1,
 			topo_order:1,
 			simplify_merges:1,
 			simplify_by_decoration:1,
