@@ -41,6 +41,10 @@ implement_shared_commit_slab(revision_sources, char *);
 
 static inline int want_ancestry(const struct rev_info *revs);
 
+void mark_treesame(struct commit *commit) {
+	commit->object.flags |= TREESAME;
+}
+
 void show_object_with_name(FILE *out, struct object *obj, const char *name)
 {
 	const char *p;
@@ -863,7 +867,7 @@ static int compact_treesame(struct rev_info *revs, struct commit *commit, unsign
 			die("compact_treesame %u", nth_parent);
 		old_same = !!(commit->object.flags & TREESAME);
 		if (rev_same_tree_as_empty(revs, commit))
-			commit->object.flags |= TREESAME;
+			mark_treesame(commit);
 		else
 			commit->object.flags &= ~TREESAME;
 		return old_same;
@@ -887,7 +891,7 @@ static int compact_treesame(struct rev_info *revs, struct commit *commit, unsign
 		if (commit->parents->next)
 			die("compact_treesame parents mismatch");
 		if (st->treesame[0] && revs->dense)
-			commit->object.flags |= TREESAME;
+			mark_treesame(commit);
 		else
 			commit->object.flags &= ~TREESAME;
 		free(add_decoration(&revs->treesame, &commit->object, NULL));
@@ -920,7 +924,7 @@ static unsigned update_treesame(struct rev_info *revs, struct commit *commit)
 		if (relevant_parents ? relevant_change : irrelevant_change)
 			commit->object.flags &= ~TREESAME;
 		else
-			commit->object.flags |= TREESAME;
+			mark_treesame(commit);
 	}
 
 	return commit->object.flags & TREESAME;
@@ -959,7 +963,7 @@ static void try_to_simplify_commit(struct rev_info *revs, struct commit *commit)
 
 	if (!commit->parents) {
 		if (rev_same_tree_as_empty(revs, commit))
-			commit->object.flags |= TREESAME;
+			mark_treesame(commit);
 		return;
 	}
 
@@ -1033,7 +1037,7 @@ static void try_to_simplify_commit(struct rev_info *revs, struct commit *commit)
 			 * TREESAME here.
 			 */
 			if (!revs->show_pulls || !nth_parent)
-				commit->object.flags |= TREESAME;
+				mark_treesame(commit);
 
 			return;
 
@@ -1081,7 +1085,7 @@ static void try_to_simplify_commit(struct rev_info *revs, struct commit *commit)
 	 * update_treesame, which should be kept in sync.
 	 */
 	if (relevant_parents ? !relevant_change : !irrelevant_change)
-		commit->object.flags |= TREESAME;
+		mark_treesame(commit);
 }
 
 static int process_parents(struct rev_info *revs, struct commit *commit,
